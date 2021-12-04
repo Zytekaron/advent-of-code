@@ -1,6 +1,9 @@
 const input = readInput();
+const valueMap = new Map();
 
-const numbers = input.shift().split(',').map(n => parseInt(n));
+const numbers = input.shift()
+    .split(',')
+    .map(n => +n);
 
 const boards = [];
 
@@ -9,9 +12,10 @@ while (input.length) {
 
     const board = [];
     for (let i = 0; i < 5; i++) {
-        board[i] = input.shift().trim().split(/\s+/g).map(n => {
-            return { value: parseInt(n), marked: false };
-        });
+        board[i] = input.shift()
+            .trim()
+            .split(/\s+/g)
+            .map(n => getValue(+n));
     }
     boards.push(board);
 }
@@ -21,14 +25,9 @@ while (input.length) {
 let winner, winNumber;
 game:
 for (const number of numbers) {
+    valueMap.get(number).marked = true;
+
     for (const board of boards) {
-        for (let i = 0; i < board.length; i++) {
-            for (let j = 0; j < board[i].length; j++) {
-                if (board[i][j].value == number) {
-                    board[i][j].marked = true;
-                }
-            }
-        }
         if (checkWin(board)) {
             winner = board;
             winNumber = number;
@@ -40,38 +39,30 @@ for (const number of numbers) {
 let sum = 0;
 for (const row of winner) {
     for (const elem of row) {
-        if (elem.marked) continue;
-        sum += elem.value;
+        if (!elem.marked) {
+            sum += elem.value;
+        }
     }
 }
 console.log(sum * winNumber);
 
 // Part 2
 
-for (const board of boards) {
-    for (let i = 0; i < board.length; i++) {
-        for (let j = 0; j < board[i].length; j++) {
-            board[i][j].marked = false;
-        }
-    }
+for (const value of Object.values(valueMap)) {
+    value.marked = false;
 }
 
 let won = 0;
 game2:
 for (const number of numbers) {
+    valueMap.get(number).marked = true;
+
     for (const board of boards) {
         if (board.won) continue;
 
-        for (let i = 0; i < board.length; i++) {
-            for (let j = 0; j < board[i].length; j++) {
-                if (board[i][j].value == number) {
-                    board[i][j].marked = true;
-                }
-            }
-        }
-
         if (checkWin(board)) {
             board.won = true;
+
             won++;
             if (won == boards.length) {
                 winner = board;
@@ -85,8 +76,9 @@ for (const number of numbers) {
 sum = 0;
 for (const row of winner) {
     for (const elem of row) {
-        if (elem.marked) continue;
-        sum += elem.value;
+        if (!elem.marked) {
+            sum += elem.value;
+        }
     }
 }
 console.log(sum * winNumber);
@@ -104,6 +96,16 @@ function checkWin(board) {
     }
 
     return false;
+}
+
+function getValue(value) {
+    if (valueMap.has(value)) {
+        return valueMap.get(value);
+    }
+
+    const obj = { value, marked: false };
+    valueMap.set(value, obj);
+    return obj;
 }
 
 function readInput() {
