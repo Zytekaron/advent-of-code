@@ -1,6 +1,14 @@
 const input = readInput();
 
-const [maxX, maxY] = findMax(input);
+let maxX = -Infinity;
+let maxY = -Infinity;
+for (const [[x1, y1], [x2, y2]] of arr) {
+    if (x1 > maxX) maxX = x1;
+    if (x2 > maxX) maxX = x2;
+
+    if (y1 > maxY) maxY = y1;
+    if (y2 > maxY) maxY = y2;
+}
 
 // Part 1
 
@@ -9,17 +17,22 @@ const grid = Array(maxX + 1).fill(0)
 
 for (let [[x1, y1], [x2, y2]] of input) {
     if (x1 == x2) {
-        if (y2 < y1) [y1, y2] = [y2, y1];
+        if (y2 < y1) { // swap if mis-ordered
+            [y1, y2] = [y2, y1];
+        }
         for (let y = y1; y <= y2; y++) {
             grid[x1][y]++;
         }
     }
     if (y1 == y2) {
-        if (x2 < x1) [x1, x2] = [x2, x1];
+        if (x2 < x1) { // swap if mis-ordered
+            [x1, x2] = [x2, x1];
+        }
         for (let x = x1; x <= x2; x++) {
             grid[x][y1]++;
         }
     }
+    // other cases are ignored
 }
 
 let sum = 0;
@@ -31,7 +44,6 @@ for (const row of grid) {
     }
 }
 
-// console.log(grid.map(r => r.join(' ')).join('\n'))
 console.log(sum);
 
 // Part 2
@@ -45,18 +57,21 @@ for (let [[x1, y1], [x2, y2]] of input) {
     while (true) {
         grid2[x][y]++;
 
-        if (x1 != x2) x += x1 < x2 ? 1 : -1;
-        if (y1 != y2) y += y1 < y2 ? 1 : -1;
-
         if (x1 > x2) {
+            x--;
             if (x < x2) break
-        } else {
+        }
+        if (x1 < x2) {
+            x++;
             if (x > x2) break;
         }
 
         if (y1 > y2) {
+            y--;
             if (y < y2) break
-        } else {
+        }
+        if (y1 < y2) {
+            y++;
             if (y > y2) break;
         }
     }
@@ -71,22 +86,9 @@ for (const row of grid2) {
     }
 }
 
-// console.log(grid2.map(r => r.join(' ')).join('\n'))
 console.log(sum);
 
 
-
-function findMax(arr) {
-    let maxX = -Infinity, maxY = -Infinity;
-    for (const [[x1, y1], [x2, y2]] of arr) {
-        if (x1 > maxX) maxX = x1;
-        if (x2 > maxX) maxX = x2;
-
-        if (y1 > maxY) maxY = y1;
-        if (y2 > maxY) maxY = y2;
-    }
-    return [maxX, maxY];
-}
 
 function parse(line) {
     return line.split(' -> ').map(s => {
