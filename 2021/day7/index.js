@@ -13,9 +13,9 @@ console.log(sum);
 
 // Part 2
 
-const inputSum = input.reduce((acc, cur) => acc + cur, 0);
-const avg1 = Math.floor(inputSum / input.length); // correct for my input
-const avg2 = Math.ceil(inputSum / input.length); // correct for test case
+const inputAvg = input.reduce((acc, cur) => acc + cur, 0) / input.length;
+const avg1 = Math.floor(inputAvg); // correct for my input
+const avg2 = Math.ceil(inputAvg); // correct for test case
 
 let sum1 = 0;
 for (const num of input) {
