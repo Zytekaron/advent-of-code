@@ -27,8 +27,6 @@ const input2 = input
 
 sum = 0;
 for (const [line, test] of input2) {
-    console.log(line);
-
     const segments = {};
 
     const oneLetters = new Set(find(line, str => str.length == 2).split(''));
@@ -59,7 +57,6 @@ for (const [line, test] of input2) {
 
     // find top right segment from #1 and #6
     for (const letter of oneLetters) {
-        console.log(oneLetters, sixLetters, sixLetters.has(oneLetters[0]), sixLetters.has(oneLetters[1]))
         if (!sixLetters.has(letter)) {
             segments['tr'] = letter;
         }
@@ -86,7 +83,6 @@ for (const [line, test] of input2) {
             fiveLetters = word;
         }
     }
-    console.log('two', twoLetters)
 
     // find b from #8 - #2 - #1
     const bLetters = new Set(eightLetters);
