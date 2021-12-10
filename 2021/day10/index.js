@@ -19,9 +19,8 @@ const openers = new Set(Object.keys(chars));
 const part2 = [];
 
 let score = 0;
+outer:
 for (const line of input) {
-    let ok = true; // for part 2
-
     const stack = [];
     for (const char of line) {
         if (openers.has(char)) {
@@ -30,15 +29,12 @@ for (const line of input) {
             const popped = stack.pop();
             if (chars[popped] != char) {
                 score += points[char];
-                
-                ok = false; // for part 2
+                continue outer;
             }
         }
     }
 
-    if (ok) { // for part 2
-        part2.push(stack);
-    }
+    part2.push(stack);
 }
 
 console.log(score);
