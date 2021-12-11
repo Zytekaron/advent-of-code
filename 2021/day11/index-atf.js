@@ -1,8 +1,4 @@
-const { stdout } = require('process');
-
 const input = readInput();
-
-// Part 1
 
 function markAdj(objs, r, c) {
     if (objs[r] == null || objs[r][c] == null) return; // out of range
@@ -26,6 +22,8 @@ function markAdj(objs, r, c) {
     markAdj(objs, r,     c + 1);
     markAdj(objs, r - 1, c + 1);
 }
+
+// Part 1
 
 let inputObjs = [];
 for (const r in input) {
