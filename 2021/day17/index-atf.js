@@ -25,7 +25,7 @@ function hitsTarget(xv, yv) {
     }
 }
 
-const allys = []; // for part 2
+let valid = 0; // for part 2
 let maxyv = -Infinity;
 for (let xv = 0; xv < 200; xv++) {
     if (xv == 0) continue;
@@ -33,7 +33,7 @@ for (let xv = 0; xv < 200; xv++) {
     for (let yv = -150; yv < 150; yv++) {
         if (hitsTarget(xv, yv)) {
             maxyv = yv;
-            allys.push(yv); // for part 2
+            valid++; // for part 2
         }
     }
 }
@@ -41,7 +41,7 @@ console.log((maxyv * maxyv + maxyv) / 2);
 
 // Part 2
 
-console.log(allys.length);
+console.log(valid);
 
 function readInput() {
     process.chdir(__dirname);
