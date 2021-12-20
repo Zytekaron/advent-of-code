@@ -11,12 +11,10 @@ const image = imageStr
 // Part 1
 
 function run(passes, gridSize) {
-    const imageSize = image.length;
-
     let grid = Array(gridSize).fill(0)
         .map(() => Array(gridSize).fill(false));
 
-    const half = Math.floor(gridSize / 2 - imageSize / 2);
+    const half = Math.floor(gridSize / 2 - image.length / 2);
     for (let y = 0; y < image.length; y++) {
         for (let x = 0; x < image[0].length; x++) {
             grid[x + half][y + half] = image[x][y];
@@ -25,8 +23,6 @@ function run(passes, gridSize) {
 
     for (let pass = 0; pass < passes; pass++) {
         const isInfiniteStep = algorithm[0] && pass % 2 == 1; // odd-numbered steps are infinite steps
-
-        const newGrid = grid.slice().map(v => v.slice());
 
         for (let y = 0; y < gridSize; y++) {
             for (let x = 0; x < gridSize; x++) {
@@ -48,11 +44,9 @@ function run(passes, gridSize) {
 
                 const index = parseInt(binary, 2);
 
-                newGrid[x][y] = algorithm[index];
+                grid[x][y] = algorithm[index];
             }
         }
-
-        grid = newGrid;
     }
 
     let sum = 0;
